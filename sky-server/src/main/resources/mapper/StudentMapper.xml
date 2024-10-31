@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.mapper.StudentMapper">
+
+    <update id="update">
+        update student
+        <set>
+            <if test="studentId != null and studentId != ''">
+              student_id = #{studentId},
+            </if>
+            <if test="studentName != null and studentName != ''">
+              student_name = #{studentName},
+            </if>
+            <if test="gender != null and gender != ''">
+              gender = #{gender},
+            </if>
+            <if test="birthDay != null and birthDay != ''">
+              birth_date = #{birthDay},
+            </if>
+            <if test="grade != null and grade != ''">
+              grade = #{grade},
+            </if>
+            <if test="phone != null and phone != ''">
+              phone = #{phone},
+            </if>
+            <if test="email != null and email != ''">
+              email = #{email},
+            </if>
+            <if test="address != null and address != ''">
+              address = #{address},
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+              update_time = #{updateTime},
+            </if>
+        </set>
+        where student_id = #{studentId}
+    </update>
+
+    <delete id="delete">
+        delete from student where student_id in
+        <foreach collection="studentIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="pageQuery" resultType="com.sky.vo.StudentVO">
+        select * from student
+        <where>
+            <if test="name != null and name != ''">
+                and student_name like concat('%',#{name},'%')
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="getByName" resultType="com.sky.vo.StudentVO">
+        select * from student
+        <where>
+            <if test="studentName != null and studentName != ''">
+                and student_name like concat('%',#{studentName},'%')
+            </if>
+        </where>
+    </select>
+
+</mapper>

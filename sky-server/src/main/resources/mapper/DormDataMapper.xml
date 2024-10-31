@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.mapper.DormDataMapper">
+    
+    <update id="update">
+        update dormitory
+        <set>
+            <if test="dormBuild != null and dormBuild != ''">
+                dorm_build = #{dormBuild},
+            </if>
+            <if test="dormFloor != null">
+                dorm_floor = #{dormFloor},
+            </if>
+            <if test="capacity != null">
+                capacity = #{capacity},
+            </if>
+            <if test="availableBeds != null">
+                available_beds = #{availableBeds},
+            </if>
+            <if test="gender != null and gender != ''">
+                gender = #{gender},
+            </if>
+        </set>
+        where dorm_id = #{dormId}
+    </update>
+
+    <delete id="delete">
+        delete from dormitory where dorm_id in
+        <foreach collection="dormIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="listAvailableBeds" resultType="com.sky.vo.DormitoryVO">
+        select * from dormitory where available_beds > 0
+    </select>
+    
+</mapper>
